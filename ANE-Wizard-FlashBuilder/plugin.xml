@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            name="Air Native Extensions (ANE)"
+            id="ANE-Wizard-FlashBuilder">
+      </category>
+      <wizard
+            name="ANE Project"
+            icon="icons/freshplanet.gif"
+            category="ANE-Wizard-FlashBuilder"
+            class="com.freshplanet.ane.wizards.flashbuilder.NewANEProjectWizard"
+            id="com.freshplanet.ane.wizards.flashbuilder.NewANEProjectWizard"
+            project="true">
+      </wizard>
+   </extension>
+
+</plugin>
