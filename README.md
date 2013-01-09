@@ -1,4 +1,14 @@
-**ANE-Wizard**
+# ANE-Wizard #
+***
+#####This is a fork of repo by [freshplanet](https://github.com/freshplanet/ANE-Wizard) with some CHANGES.
+#####Now an input for the extension package.
+***
+ 
+
+
+
+
+
 
 This wizard is a set of tools to help Air Mobile developers build ANE (Air Native Extensions) faster.
 
