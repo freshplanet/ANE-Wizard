@@ -21,10 +21,12 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+import pl.mateuszmackowiak.ane.wizard.android.WizardNewProjectPackageAndLocationPage;
+
 
 public class NewANEProjectWizard extends Wizard implements INewWizard
 {
-	private WizardNewProjectCreationPage wizardPage;
+	private WizardNewProjectPackageAndLocationPage wizardPage;
 	private IConfigurationElement config;
 	private IWorkbench workbench;
 	private IStructuredSelection selection;
@@ -43,9 +45,10 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		wizardPage = new WizardNewProjectCreationPage("NewANEProject");
+		wizardPage = new WizardNewProjectPackageAndLocationPage("NewANEProject");
 		wizardPage.setDescription("Create a new ANE Project");
 		wizardPage.setTitle("New ANE Project");
+		wizardPage.setInitialPackageName("com.yourcompany");
 		addPage(wizardPage);
 	}
 
@@ -60,6 +63,7 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
 		if (project != null) return true;
 		
 		final IProject projectHandle = wizardPage.getProjectHandle();
+		final String packageName = wizardPage.getPackageName();
 		URI projectURI = (!wizardPage.useDefaults()) ? wizardPage.getLocationURI() : null;
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		final IProjectDescription desc = workspace.newProjectDescription(projectHandle.getName());
@@ -68,7 +72,7 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
             protected void execute(IProgressMonitor monitor) throws CoreException 
             {
-                createProject(desc, projectHandle, monitor);
+                createProject(desc, projectHandle, monitor,packageName);
             }
         };
         
@@ -106,7 +110,7 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
      * @throws CoreException
      * @throws OperationCanceledException
      */
-    void createProject(IProjectDescription description, IProject proj, IProgressMonitor monitor) throws CoreException, OperationCanceledException 
+    void createProject(IProjectDescription description, IProject proj, IProgressMonitor monitor, String packageName) throws CoreException, OperationCanceledException 
 	{
         try 
         {
@@ -126,17 +130,33 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
             
             // Create folders
             createFolder("src", container, monitor);
-            createFolder("src/com", container, monitor);
+            /*createFolder("src/com", container, monitor);
             createFolder("src/com/freshplanet", container, monitor);
             createFolder("src/com/freshplanet/ane", container, monitor);
-
+			*/
+            
+            
+            String fullPackageString = "src";
+            //Create folders if package not empty
+            if(packageName!=null && !packageName.isEmpty()){
+            	String[] packages = packageName.split("\\.");
+            	
+            	for (String packageElement : packages) {
+            		fullPackageString+="/"+packageElement;
+            		createFolder(fullPackageString, container, monitor);
+				}   
+            }
+            
+            
             // Copy files
             String projectName = description.getName();
-            copyFile(".project", ".project", projectName, container, monitor);
-            copyFile(".actionScriptProperties", ".actionScriptProperties", projectName, container, monitor);
-            copyFile(".flexLibProperties", ".flexLibProperties", projectName, container, monitor);
-            copyFile("extension.xml", "src/extension.xml", projectName, container, monitor);
-            copyFile("Main.as", "src/com/freshplanet/ane/"+ projectName + ".as", projectName, container, monitor);
+            copyFile(".project", ".project", projectName,packageName, container, monitor);
+            copyFile(".actionScriptProperties", ".actionScriptProperties", projectName,packageName, container, monitor);
+            copyFile(".flexLibProperties", ".flexLibProperties", projectName,packageName, container, monitor);
+            copyFile("extension.xml", "src/extension.xml", projectName,packageName, container, monitor);
+            
+            copyFile("Main.as", fullPackageString+"/"+ projectName + ".as", projectName,packageName, container, monitor);
+            //copyFile("Main.as", "src/com/freshplanet/ane/"+ projectName + ".as", projectName, container, monitor);
         }
         catch (IOException ioe) 
         {
@@ -156,9 +176,9 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
 		folder.create(true, true, monitor);
     }
     
-    private void copyFile(String resourceName, String finalPath, String projectName, IContainer container, IProgressMonitor monitor) throws IOException, CoreException
+    private void copyFile(String resourceName, String finalPath, String projectName, String packageName, IContainer container, IProgressMonitor monitor) throws IOException, CoreException
     {
-    	InputStream resourceStream = openFilteredResource(resourceName, projectName);
+    	InputStream resourceStream = openFilteredResource(resourceName, projectName,packageName);
         addFileToProject(container, new Path(finalPath), resourceStream, monitor);
         resourceStream.close();
     }
@@ -187,7 +207,7 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
 
     }
     
-    private InputStream openFilteredResource(String resourceName, String projectName) throws CoreException
+    private InputStream openFilteredResource(String resourceName, String projectName,String packageName) throws CoreException
     {
     	final String newline = "\n";
         String line;
@@ -199,6 +219,11 @@ public class NewANEProjectWizard extends Wizard implements INewWizard
             try {
 
                 while ((line = reader.readLine()) != null) {
+                	if(packageName!=null && !packageName.isEmpty())
+                		line = line.replaceAll("\\$\\{PACKAGE_NAME\\}", packageName);
+                	else{
+                		line = line.replaceAll("\\$\\{PACKAGE_NAME\\}", "");
+                	}
                     line = line.replaceAll("\\$\\{PROJECT_NAME\\}", projectName);
                     sb.append(line);
                     sb.append(newline);
