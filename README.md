@@ -14,10 +14,9 @@ The wizard is composed of 4 tools:
 
 - an updated version of Divij Kumar's Xcode template (https://github.com/divijkumar/xcode-template-ane) that let you quickly setup the iOS part of your ANE
 - an Eclipse "New ANE Project" wizard that let you quickly setup the Android part of your ANE
-
 - a Flash Builder "New ANE Main Project" wizard that let you quickly setup two projects with a correct folders, the build script for the ANE and a second Actionscript project for the ANE
 - a Flash Builder "New ANE Project" wizard that let you quickly setup the Actionscript part of your ANE
-- 
+
 **Installation**
 
 Note: the path below might change depending on your system. I assume you are on OSX.
