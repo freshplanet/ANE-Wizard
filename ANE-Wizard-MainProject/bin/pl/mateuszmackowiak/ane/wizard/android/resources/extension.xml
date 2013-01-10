@@ -1,0 +1,24 @@
+<extension xmlns="http://ns.adobe.com/air/extension/3.1">
+  <id>${MYPACKAGE_NAME}.${MYPROJECT_NAME}</id>
+  <versionNumber>1</versionNumber>
+  <platforms>
+    <platform name="iPhone-ARM">
+            <applicationDeployment>
+                <nativeLibrary>lib${MYPROJECT_NAME}.a</nativeLibrary>
+                <initializer>${MYPROJECT_NAME}ExtInitializer</initializer>
+                <finalizer>${MYPROJECT_NAME}ExtFinalizer</finalizer>
+            </applicationDeployment>
+    </platform>
+    <platform name="Android-ARM"> 
+        <applicationDeployment> 
+            <nativeLibrary>lib${MYPROJECT_NAME}.jar</nativeLibrary> 
+            <initializer>${MYPROJECT_NAME}.${MYPROJECT_NAME}.${MYPROJECT_NAME}Extension</initializer> 
+            <finalizer>${MYPROJECT_NAME}.${MYPROJECT_NAME}.${MYPROJECT_NAME}Extension</finalizer> 
+        </applicationDeployment> 
+    </platform> 
+    
+    <platform name="default"> 
+        <applicationDeployment/> 
+    </platform> 
+  </platforms>
+</extension>
