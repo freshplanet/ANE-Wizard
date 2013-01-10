@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ANE-Wizards-FlashBuilderMainProject
+Bundle-SymbolicName: ANE-Wizards-FlashBuilderMainProject;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: pl.mateuszmackowiak.ane.wizard.android.Activator
+Bundle-Vendor: Mateusz Maćkowiak
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

@@ -1,4 +1,6 @@
-AIR_SDK_PATH = /Applications/Adobe Flash Builder 4.6/sdks/4.6.0
+AIR_SDK_PATH = ${MYAIR_SDK_PATH}
+PROJECT_NAME = ${MYPROJECT_NAME}
+
 FRE.JAR = ${AIR_SDK_PATH}/lib/android/FlashRuntimeExtensions.jar
 ADT.JAR = ${AIR_SDK_PATH}/lib/adt.jar
 
@@ -10,7 +12,7 @@ ANDROID_FOLDER = NativeAndroid
 ANE_PATH = ${BINARIES_FOLDER}/${PROJECT_NAME}.ane
 
 SWC_PATH = ${ACTIONSCRIPT_FOLDER}/bin/${PROJECT_NAME}.swc
-EXTENSION.XML = ${ACTIONSCRIPT_FOLDER}/src/extension.xml
+EXTENSION.XML = extension.xml
 
 IOS_PLATFORM_OPTIONS = ${IOS_FOLDER}/${PROJECT_NAME}/platformoptions.xml
 IOS_PROJECT_PATH = ${IOS_FOLDER}/${PROJECT_NAME}.xcodeproj
